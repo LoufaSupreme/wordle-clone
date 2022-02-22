@@ -221,7 +221,21 @@ body {
     }
 }
 
-.tile.shake {
+.tile.active.anomaly-letter {
+    animation: vibrate 120ms linear infinite alternate;
+    /* animation: multicolor-border 7000ms infinite alternate; */
+}
+
+@keyframes vibrate {
+    0% {
+        transform: rotateZ(4deg);
+    }
+    100% {
+        transform: rotateZ(-4deg);
+    }
+}
+
+.tile.active.shake {
     animation: shake 550ms ease-in-out;
 }
 
@@ -694,6 +708,42 @@ footer > a {
     }
     100% {
         background-color: pink;
+    }
+}
+
+@keyframes multicolor-border {
+    0% {
+        border-color: blue;
+    }
+    10% {
+        border-color: #8e44ad;
+    }
+    20% {
+        border-color: #1abc9c;
+    }
+    30% {
+        border-color: #d35400;
+    }
+    40% {
+        border-color: red;
+    }
+    50% {
+        border-color: #34495e;
+    }
+    60% {
+        border-color: green;
+    }
+    70% {
+        border-color: #2980b9;
+    }
+    80% {
+        border-color: #f1c40f;
+    }
+    90% {
+        border-color: #2980b9;
+    }
+    100% {
+        border-color: pink;
     }
 }
 

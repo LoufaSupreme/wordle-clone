@@ -2619,7 +2619,7 @@ function gameLoop() {
     targetWord = targetWords[index];
 
     // generate a list of daily words to use as "Anomaly" secrets:
-    generateDailySecrets(50);
+    generateDailySecrets(10);
     localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
 
     // resets body vertical height on resize
@@ -2761,14 +2761,17 @@ function deleteLetter() {
     lastActive.innerText = "";
     delete lastActive.dataset.letter;
     lastActive.classList.remove('active');
+    lastActive.classList.remove('anomaly-letter');
 }
 
 // for guesses that are not a word or wrong number of letters
 function shakeTiles(tiles) {
     tiles.forEach(tile => {
         tile.classList.add('shake');
-        tile.addEventListener('animationend', () => {
-            tile.classList.remove('shake');
+        tile.addEventListener('animationend', (e) => {
+            if (e.animationName === 'shake') {
+                tile.classList.remove('shake');
+            }
         });
     })   
 }
@@ -2844,6 +2847,7 @@ function checkGuess(activeTiles, guess) {
                 activeTiles[i].classList.remove('flip');
                 activeTiles[i].classList.add('correct');
                 activeTiles[i].classList.remove('active');
+                activeTiles[i].classList.remove('anomaly-letter');
 
                 if (i === activeTiles.length - 1) {
                     activeTiles[i].addEventListener('transitionend', doneFlip, false);
@@ -2874,6 +2878,9 @@ function checkGuess(activeTiles, guess) {
             activeTiles[i].classList.remove('flip');
             activeTiles[i].classList.add(color);
             activeTiles[i].classList.remove('active');
+            activeTiles[i].classList.remove('anomaly-letter');
+            //reset text color (anomalies can change colour)
+            activeTiles[i].style.color = 'hsl(var(--clr-key-text))';
 
             if (i === activeTiles.length - 1) {
                 activeTiles[i].addEventListener('transitionend', doneFlip, false);
@@ -2987,8 +2994,22 @@ function makeAlert(content, duration = 1000) {
     }, duration)
 }
 
+function styleAnomalyLetters(numSharedLetters) {
+    const activeTiles = document.querySelectorAll('.tile.active');
+    activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
+    let colour = 'hsl(var(--clr-key-text))';
+    if (numSharedLetters === WORD_LENGTH) {
+        colour = 'hsl(115 39% 53%)';
+        activeTiles.forEach(tile => tile.classList.add('anomaly-letter'))
+    }
+    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(49 51% 57%)';
+    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(29 41% 47%)';
+    activeTiles.forEach(tile => tile.style.color = colour)
+}
+
 function captureKey(e) {
     let key;
+
     if (e.type === 'click') {
         key = e.target.dataset.key;
         if (e.target.dataset.key === undefined) return
@@ -3007,7 +3028,7 @@ function checkSecretCodes(secretCodesArray, char) {
 
         if (secretCode.sequence.length > secretCode.key.length) secretCode.sequence.splice(0,1);
         
-        if (secretCode.sequence.join('') === secretCode.key) {
+        if (secretCode.sequence.join('') === secretCode.key && char.match(regex)) {
             makeAlert('Secret Found!', 2000);
             clearImages();
             secretCode.func();
@@ -3025,8 +3046,33 @@ function checkSecretCodes(secretCodesArray, char) {
             generateGif('covid');
             return;
         }
+        // check daily anomaly
+        let maxSharedLetters = 0;
         for (let word of dailySecretWords) {
-            if (secretCode.sequence.join('') === word) {
+            const guess = secretCode.sequence.join('');
+
+            // count up the frequencies of each letter in the daily word:
+            const wordFreqCounter = {};
+            for (let letter of word) {
+                if (wordFreqCounter[letter] === undefined) wordFreqCounter[letter] = 1;
+                else wordFreqCounter[letter]++;
+            }
+
+            // check how many shared letters there are in the guess:
+            let numSharedLetters = 0;
+            for (let letter of guess) {
+                if (wordFreqCounter[letter] !== undefined && wordFreqCounter[letter] > 0) {
+                    wordFreqCounter[letter]--;
+                    numSharedLetters++;
+                    if (numSharedLetters > maxSharedLetters) maxSharedLetters = numSharedLetters;
+                }
+            }
+
+            // style the active tiles based on how many shared letters there are with the daily secret word (anomaly):
+            if (guess !== word) styleAnomalyLetters(maxSharedLetters)
+
+            // do animation if the guess is a daily secret word:
+            if (guess === word) {
                 makeAlert('Daily Anomaly Found!', 2000);
         
                 // choose a random animation:
