@@ -3002,8 +3002,8 @@ function styleAnomalyLetters(numSharedLetters) {
         colour = 'hsl(115 49% 53%)';
         activeTiles.forEach(tile => tile.classList.add('anomaly-letter'))
     }
-    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(85 39% 47%)';
-    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(69 45% 57%)';
+    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(95 39% 47%)';
+    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(69 55% 50%)';
     else if (numSharedLetters === WORD_LENGTH - 3) colour = 'hsl(49 45% 67%)';
     activeTiles.forEach(tile => tile.style.color = colour)
 }
