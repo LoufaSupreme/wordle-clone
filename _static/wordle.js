@@ -2619,7 +2619,7 @@ function gameLoop() {
     targetWord = targetWords[index];
 
     // generate a list of daily words to use as "Anomaly" secrets:
-    generateDailySecrets(10);
+    generateDailySecrets(1);
     localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
 
     // resets body vertical height on resize
@@ -2999,11 +2999,12 @@ function styleAnomalyLetters(numSharedLetters) {
     activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
     let colour = 'hsl(var(--clr-key-text))';
     if (numSharedLetters === WORD_LENGTH) {
-        colour = 'hsl(115 39% 53%)';
+        colour = 'hsl(115 49% 53%)';
         activeTiles.forEach(tile => tile.classList.add('anomaly-letter'))
     }
-    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(49 51% 57%)';
-    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(29 41% 47%)';
+    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(85 39% 47%)';
+    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(69 45% 57%)';
+    else if (numSharedLetters === WORD_LENGTH - 3) colour = 'hsl(49 45% 67%)';
     activeTiles.forEach(tile => tile.style.color = colour)
 }
 
