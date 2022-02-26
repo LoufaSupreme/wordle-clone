@@ -2429,6 +2429,8 @@ function generateDailySecrets(num) {
         const permanentSecretCodes = secretCodes.map(code => code.key);
         if (wordToAdd !== targetWord && !permanentSecretCodes.includes(wordToAdd)) {
             dailySecretWords.push(wordToAdd);
+            // return after adding one if you only want 1 daily anomaly word:
+            return;
         }
         index++;
     }
@@ -2452,7 +2454,7 @@ function resultsText() {
         result += grid.slice(i*5, i*5+5).join('') + "\n";
     }
     result.trim();
-    if (dailySecretFound !== false) result += `\n⭐${dailySecretFound} Found!⭐`
+    if (dailySecretFound !== false) result += `\n⭐${dailySecretFound} Found⭐`
     return result.trim();
 }
 
@@ -2619,7 +2621,8 @@ function gameLoop() {
     targetWord = targetWords[index];
 
     // generate a list of daily words to use as "Anomaly" secrets:
-    generateDailySecrets(1);
+    // this will give it 10 tries to find one word:
+    generateDailySecrets(10);
     localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
 
     // resets body vertical height on resize
