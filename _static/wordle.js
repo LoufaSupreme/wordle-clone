@@ -2439,14 +2439,18 @@ function generateDailySecrets(num) {
 
 function resultsText() {
     const tiles = [...document.querySelectorAll('.tile')];
-    const dark = '⬛'
-    const green = '🟩'
-    const yellow = '🟨'
+    // const dark = '⬛'
+    // const green = '🟩'
+    // const yellow = '🟨'
+
+    const dark = '2B1B'
+    const green = '1f7e9'
+    const yellow = '1F7E8'
 
     const grid = tiles.map(tile => {
-        if (tile.classList.contains('correct')) return green;
-        else if (tile.classList.contains('present')) return yellow;
-        else return dark;
+        if (tile.classList.contains('correct')) return String.fromCodePoint("0x"+green);
+        else if (tile.classList.contains('present')) return String.fromCodePoint("0x"+yellow);
+        else return String.fromCodePoint("0x"+dark);
     })
     
     let result = `Shmurdle ${gameNumber} ${tiles.filter(t => t.dataset.letter).length / 5}/6\n\n`
@@ -2671,7 +2675,7 @@ function startInteraction() {
 // stop user from adding letters or submitting guesses
 function stopInteraction() {
     document.removeEventListener('click', handleClick);
-    document.removeEventListener('keydown', handleKeyPress);
+    document.removeEventListener('click', captureKey);
     document.removeEventListener('keydown', handleKeyPress);
     document.removeEventListener('keydown', captureKey);
     console.log('Stopping User Interaction');
