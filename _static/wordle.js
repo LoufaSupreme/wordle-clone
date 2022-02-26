@@ -2464,7 +2464,8 @@ function copyToClipboard() {
     // use navigator.share: this will open up the mobile share options 
     if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
         navigator.share({
-            title: `Shmurdle ${gameNumber}`,
+            // title gets displayed for android phones but not iphone
+            // title: `Shmurdle ${gameNumber}`,
             text: resultsText()
         }).then(() => {
             console.log('Thanks for sharing!');
