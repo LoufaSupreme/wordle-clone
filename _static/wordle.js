@@ -3357,9 +3357,11 @@ function blurs() {
 }
 
 function multicolor() {
-    // const keys = document.querySelectorAll('.key');
+    const keys = document.querySelectorAll('.key');
     const tiles = document.querySelectorAll('.tile');
-    // keys.forEach(key => {
+    const title = document.querySelector('.title');
+    keys.forEach(key => {
+        key.style.animation = 'multicolor 25000ms linear'
     //     const hue = Math.floor(Math.random() * (360-150) + 150);
     //     const sat = Math.floor(Math.random() * (100 - 60) + 60);
     //     const brightness = Math.floor(Math.random() * (50 - 10) + 10);
@@ -3368,7 +3370,7 @@ function multicolor() {
     //         var(--saturation, ${sat}%), 
     //         calc(var(--lightness-offset, 0%) + var(--lightness, ${brightness}%))
     //     `
-    // });
+    });
     tiles.forEach(tile => {
         const hue = Math.floor(Math.random() * (360-150) + 150);
         const sat = Math.floor(Math.random() * (100 - 60) + 60);
@@ -3379,6 +3381,7 @@ function multicolor() {
             calc(var(--lightness-offset, 0%) + var(--lightness, ${brightness}%))
         `
     });
+    title.style.animation = 'multicolor 15000ms infinite alternate';
 }
 
 function flipEachKey() {
