@@ -2439,23 +2439,27 @@ function generateDailySecrets(num) {
 
 function resultsText() {
     const tiles = [...document.querySelectorAll('.tile')];
-    // const dark = '⬛'
-    // const green = '🟩'
-    // const yellow = '🟨'
+    const dark = '⬛'
+    const green = '🟩'
+    const yellow = '🟨'
 
-    const dark = '2B1B'
-    const green = '1f7e9'
-    const yellow = '1F7E8'
+    // const dark = '2B1B'
+    // const green = '1f7e9'
+    // const yellow = '1F7E8'
 
     const grid = tiles.map(tile => {
-        if (tile.classList.contains('correct')) return String.fromCodePoint("0x"+green);
-        else if (tile.classList.contains('present')) return String.fromCodePoint("0x"+yellow);
-        else return String.fromCodePoint("0x"+dark);
+        if (tile.classList.contains('correct')) return green;
+        else if (tile.classList.contains('present')) return yellow;
+        else return dark;
     })
     
     let result = `Shmurdle ${gameNumber} ${tiles.filter(t => t.dataset.letter).length / 5}/6\n\n`
     for (let i = 0; i < 6; i++) {
-        result += grid.slice(i*5, i*5+5).join('') + "\n";
+        const line = grid.slice(i*5, i*5+5); 
+        result += line.join('') + "\n";
+        if (!line.includes(dark) && !line.includes(yellow)) {
+            break;
+        }
     }
     result.trim();
     if (dailySecretFound !== false) result += `\n⭐${dailySecretFound} Found⭐`
@@ -3154,7 +3158,7 @@ function ineedhelp() {
     });
     const possibleWord = possibleWords[Math.floor(Math.random() * possibleWords.length)];
     makeAlert(`Try: ${possibleWord}`);
-    for (let i = 0; i < 5; i++) deleteLetter();
+    for (let i = 0; i < WORD_LENGTH; i++) deleteLetter();
     for (let letter of possibleWord) {
         addLetter(letter);
     }
