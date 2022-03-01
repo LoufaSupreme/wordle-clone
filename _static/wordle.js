@@ -2447,13 +2447,25 @@ function resultsText() {
     // const green = '1f7e9'
     // const yellow = '1F7E8'
 
+    let correctCount = 0;
+    let won = false;
     const grid = tiles.map(tile => {
-        if (tile.classList.contains('correct')) return green;
-        else if (tile.classList.contains('present')) return yellow;
-        else return dark;
+        if (tile.classList.contains('correct')) {
+            correctCount++;
+            if (correctCount === WORD_LENGTH) won = true;
+            return green;
+        }
+        else if (tile.classList.contains('present')) {
+            correctCount = 0;
+            return yellow;
+        }
+        else {
+            correctCount = 0;
+            return dark;
+        }
     })
     
-    let result = `Shmurdle ${gameNumber} ${tiles.filter(t => t.dataset.letter).length / 5}/6\n\n`
+    let result = `Shmurdle ${gameNumber} ${won === true ? tiles.filter(t => t.dataset.letter).length / 5 : 'X'}/6\n\n`
     for (let i = 0; i < 6; i++) {
         const line = grid.slice(i*5, i*5+5); 
         result += line.join('') + "\n";
