@@ -2434,7 +2434,7 @@ function generateDailySecrets(num) {
         }
         index++;
     }
-    localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
+    // localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
 }
 
 function resultsText() {
@@ -3018,11 +3018,12 @@ function makeAlert(content, duration = 1000) {
     }, duration)
 }
 
-function styleAnomalyLetters(numSharedLetters) {
+function styleAnomalyLetters(numSharedLetters, found = false) {
     const activeTiles = document.querySelectorAll('.tile.active');
     activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
     let colour = 'hsl(var(--clr-key-text))';
-    if (numSharedLetters === WORD_LENGTH) {
+    if (found) colour = 'hsl(115 49% 53%)';
+    else if (numSharedLetters === WORD_LENGTH) {
         colour = 'hsl(115 49% 53%)';
         activeTiles.forEach(tile => tile.classList.add('anomaly-letter'))
     }
@@ -3042,6 +3043,63 @@ function captureKey(e) {
     else key = e.key;
     if (key !== 'Enter') {
         checkSecretCodes(secretCodes, key);
+        checkDailyAnomaly();
+    }
+}
+
+function checkDailyAnomaly() {
+    const activeTiles = [...document.querySelectorAll('.active')];
+    const activeWord = activeTiles.map(tile => tile.dataset.letter).join('').toLowerCase();
+    let maxSharedLetters = 0;
+
+    for (let word of dailySecretWords) {
+
+        // count up the frequencies of each letter in the daily word:
+        const wordFreqCounter = {};
+        for (let letter of word) {
+            if (wordFreqCounter[letter] === undefined) wordFreqCounter[letter] = 1;
+            else wordFreqCounter[letter]++;
+        }
+
+        // check how many shared letters there are in the activeWord:
+        let numSharedLetters = 0;
+        for (let letter of activeWord) {
+            if (wordFreqCounter[letter] !== undefined && wordFreqCounter[letter] > 0) {
+                wordFreqCounter[letter]--;
+                numSharedLetters++;
+                if (numSharedLetters > maxSharedLetters) maxSharedLetters = numSharedLetters;
+            }
+        }
+
+        // style the active tiles based on how many shared letters there are with the daily secret word (anomaly):
+        if (activeWord !== word) styleAnomalyLetters(maxSharedLetters)
+
+        // do animation if the activeWord is a daily secret word:
+        if (activeWord === word) {
+            makeAlert('Anomaly Found!', 2000);
+    
+            // choose a random animation:
+            let randomIndex = Math.floor(Math.random() * secretAnimations.length);
+            if (secretAnimations[randomIndex].name === 'generateGif') {
+                generateGif(word);
+            }
+            else if (secretAnimations[randomIndex].name === 'blink') {
+                let count = 0;
+                const interval = setInterval(() => {
+                    blink();
+                    if (++count >= 3) window.clearInterval(interval);
+
+                }, 500);
+            }
+            else secretAnimations[randomIndex].func();
+
+            dailySecretFound = 'Anomaly';
+            localStorage.setItem('dailySecretFound', JSON.stringify(dailySecretFound));
+            stats.dailySecretCount ? stats.dailySecretCount++ : stats.dailySecretCount = 1;
+            localStorage.setItem('stats', JSON.stringify(stats));
+            populateStats();
+            return;
+        }
     }
 }
 
@@ -3070,58 +3128,6 @@ function checkSecretCodes(secretCodesArray, char) {
         if (secretCode.sequence.join('') === 'xxxxx') {
             generateGif('covid');
             return;
-        }
-        // check daily anomaly
-        let maxSharedLetters = 0;
-        for (let word of dailySecretWords) {
-            const guess = secretCode.sequence.join('');
-
-            // count up the frequencies of each letter in the daily word:
-            const wordFreqCounter = {};
-            for (let letter of word) {
-                if (wordFreqCounter[letter] === undefined) wordFreqCounter[letter] = 1;
-                else wordFreqCounter[letter]++;
-            }
-
-            // check how many shared letters there are in the guess:
-            let numSharedLetters = 0;
-            for (let letter of guess) {
-                if (wordFreqCounter[letter] !== undefined && wordFreqCounter[letter] > 0) {
-                    wordFreqCounter[letter]--;
-                    numSharedLetters++;
-                    if (numSharedLetters > maxSharedLetters) maxSharedLetters = numSharedLetters;
-                }
-            }
-
-            // style the active tiles based on how many shared letters there are with the daily secret word (anomaly):
-            if (guess !== word) styleAnomalyLetters(maxSharedLetters)
-
-            // do animation if the guess is a daily secret word:
-            if (guess === word) {
-                makeAlert('Daily Anomaly Found!', 2000);
-        
-                // choose a random animation:
-                let randomIndex = Math.floor(Math.random() * secretAnimations.length);
-                if (secretAnimations[randomIndex].name === 'generateGif') {
-                    generateGif(word);
-                }
-                else if (secretAnimations[randomIndex].name === 'blink') {
-                    let count = 0;
-                    const interval = setInterval(() => {
-                        blink();
-                        if (++count >= 2) window.clearInterval(interval);
-
-                    }, 500);
-                }
-                else secretAnimations[randomIndex].func();
-
-                dailySecretFound = 'Anomaly';
-                localStorage.setItem('dailySecretFound', JSON.stringify(dailySecretFound));
-                stats.dailySecretCount ? stats.dailySecretCount++ : stats.dailySecretCount = 1;
-                localStorage.setItem('stats', JSON.stringify(stats));
-                populateStats();
-                return;
-            }
         }
     }
 }
