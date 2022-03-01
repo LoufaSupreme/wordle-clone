@@ -2330,7 +2330,7 @@ const secretAnimations = [
     {name: 'bounce', func: bounce},
     {name: 'blink', func: blink},
     {name: 'flipEachKey', func: flipEachKey},
-    {name: 'multicolorKeyboard', func: multicolorKeyboard},
+    {name: 'multicolor', func: multicolor},
     {name: 'generateGif', func: generateGif},
 ];
 const statHolder = {
@@ -3334,19 +3334,19 @@ function blurs() {
     modal.classList.add('blur');
 }
 
-function multicolorKeyboard() {
-    const keys = document.querySelectorAll('.key');
+function multicolor() {
+    // const keys = document.querySelectorAll('.key');
     const tiles = document.querySelectorAll('.tile');
-    keys.forEach(key => {
-        const hue = Math.floor(Math.random() * (360-150) + 150);
-        const sat = Math.floor(Math.random() * (100 - 60) + 60);
-        const brightness = Math.floor(Math.random() * (50 - 10) + 10);
-        key.style.backgroundColor = `hsl(
-            var(--hue, ${hue}), 
-            var(--saturation, ${sat}%), 
-            calc(var(--lightness-offset, 0%) + var(--lightness, ${brightness}%))
-        `
-    });
+    // keys.forEach(key => {
+    //     const hue = Math.floor(Math.random() * (360-150) + 150);
+    //     const sat = Math.floor(Math.random() * (100 - 60) + 60);
+    //     const brightness = Math.floor(Math.random() * (50 - 10) + 10);
+    //     key.style.backgroundColor = `hsl(
+    //         var(--hue, ${hue}), 
+    //         var(--saturation, ${sat}%), 
+    //         calc(var(--lightness-offset, 0%) + var(--lightness, ${brightness}%))
+    //     `
+    // });
     tiles.forEach(tile => {
         const hue = Math.floor(Math.random() * (360-150) + 150);
         const sat = Math.floor(Math.random() * (100 - 60) + 60);
