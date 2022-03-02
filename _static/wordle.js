@@ -2905,6 +2905,10 @@ function checkGuess(activeTiles, guess) {
             activeTiles[i].classList.remove('anomaly-letter');
             //reset text color (anomalies can change colour)
             activeTiles[i].style.color = 'hsl(var(--clr-key-text))';
+            
+            // if (isAnomalyLetter(activeTiles[i].dataset.letter, dailySecretWords[0])) {
+            //     activeTiles[i].style.color = 'rgb(173, 58, 58)';
+            // }
 
             if (i === activeTiles.length - 1) {
                 activeTiles[i].addEventListener('transitionend', doneFlip, false);
@@ -2913,6 +2917,11 @@ function checkGuess(activeTiles, guess) {
             }
         });
     }
+}
+
+function isAnomalyLetter(letter, anomalyWord) {
+    if (anomalyWord.includes(letter.toLowerCase())) return true;
+    else return false; 
 }
 
 function doneFlip(e) {
@@ -3018,19 +3027,24 @@ function makeAlert(content, duration = 1000) {
     }, duration)
 }
 
-function styleAnomalyLetters(numSharedLetters, found = false) {
+function styleAnomalyLetters(numSharedLetters, anomalyWord) {
     const activeTiles = document.querySelectorAll('.tile.active');
     activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
     let colour = 'hsl(var(--clr-key-text))';
-    if (found) colour = 'hsl(115 49% 53%)';
-    else if (numSharedLetters === WORD_LENGTH) {
+    if (numSharedLetters === WORD_LENGTH) {
         colour = 'hsl(115 49% 53%)';
         activeTiles.forEach(tile => tile.classList.add('anomaly-letter'))
     }
-    else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(95 39% 47%)';
-    else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(69 55% 50%)';
-    else if (numSharedLetters === WORD_LENGTH - 3) colour = 'hsl(49 45% 67%)';
-    activeTiles.forEach(tile => tile.style.color = colour)
+    // else if (numSharedLetters === WORD_LENGTH - 1) colour = 'hsl(95 39% 47%)';
+    // else if (numSharedLetters === WORD_LENGTH - 2) colour = 'hsl(69 55% 50%)';
+    // else if (numSharedLetters === WORD_LENGTH - 3) colour = 'hsl(49 45% 67%)';
+    activeTiles.forEach(tile => {
+        tile.style.color = colour;
+        if (anomalyWord.includes(tile.dataset.letter.toLowerCase())) {
+            tile.classList.add('anomaly-letter-indicator');
+        }
+        else tile.classList.remove('anomaly-letter-indicator');
+    })
 }
 
 function captureKey(e) {
@@ -3072,7 +3086,7 @@ function checkDailyAnomaly() {
         }
 
         // style the active tiles based on how many shared letters there are with the daily secret word (anomaly):
-        if (activeWord !== word) styleAnomalyLetters(maxSharedLetters)
+        if (activeWord !== word) styleAnomalyLetters(maxSharedLetters, word)
 
         // do animation if the activeWord is a daily secret word:
         if (activeWord === word) {
