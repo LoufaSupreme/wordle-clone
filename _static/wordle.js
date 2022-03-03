@@ -2786,6 +2786,8 @@ function deleteLetter() {
     delete lastActive.dataset.letter;
     lastActive.classList.remove('active');
     lastActive.classList.remove('anomaly-letter');
+    lastActive.classList.remove('anomaly-letter-indicator');
+    lastActive.style.color = 'hsl(var(--clr-key-text))'
 }
 
 // for guesses that are not a word or wrong number of letters
@@ -3049,6 +3051,7 @@ function styleAnomalyLetters(numSharedLetters, anomalyWord) {
 
 function captureKey(e) {
     let key;
+    const activeTiles = document.querySelectorAll('.active');
 
     if (e.type === 'click') {
         key = e.target.dataset.key;
