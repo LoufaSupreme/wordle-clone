@@ -2837,7 +2837,7 @@ function submitGuess() {
     }
     else {
         priorGuesses.push(guess);
-        localStorage.setItem('priorGuesses', JSON.stringify(priorGuesses));    
+        localStorage.setItem('priorGuesses', JSON.stringify(priorGuesses));
         checkGuess(activeTiles, guess);
     }
 }
@@ -2848,8 +2848,43 @@ function flipTile(tile, index, duration) {
     }, index * duration);
 }
 
+function getRemainingAnomalyLetters(anomalyWord) {
+    const anomalyTilesAlreadyFound = document.querySelectorAll('.anomaly-letter-indicator');
+
+    const anomalyWordLetterCount = {};
+    for (let i = 0; i < anomalyWord.length; i++) {
+        if (anomalyWordLetterCount[anomalyWord[i]] === undefined) {
+            anomalyWordLetterCount[anomalyWord[i]] = 1;
+        }
+        else {
+            anomalyWordLetterCount[anomalyWord[i]]++;
+        }
+    }
+    
+    anomalyTilesAlreadyFound.forEach(tile => {
+        if (anomalyWordLetterCount[tile.dataset.letter.toLowerCase()] !== undefined && anomalyWordLetterCount[tile.dataset.letter.toLowerCase()] > 0) {
+            anomalyWordLetterCount[tile.dataset.letter.toLowerCase()]--;
+        }
+    })
+
+    return anomalyWordLetterCount;
+}
+
+function isAnomalyLetter(tile, remainingAnomalyLetters) {
+
+    if (remainingAnomalyLetters[tile.dataset.letter.toLowerCase()] !== undefined && remainingAnomalyLetters[tile.dataset.letter.toLowerCase()] > 0) {
+        remainingAnomalyLetters[tile.dataset.letter.toLowerCase()]--;
+        return true;
+    }
+    else return false;
+}
+
 function checkGuess(activeTiles, guess) {
     stopInteraction();
+    let remainingAnomalyLetters = {};
+
+    // not currently in use
+    activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
     
     // get the frequency of each letter in the targetWord
     const letterCount = {};
@@ -2907,10 +2942,10 @@ function checkGuess(activeTiles, guess) {
             activeTiles[i].classList.remove('anomaly-letter');
             //reset text color (anomalies can change colour)
             activeTiles[i].style.color = 'hsl(var(--clr-key-text))';
-            
-            // if (isAnomalyLetter(activeTiles[i].dataset.letter, dailySecretWords[0])) {
-            //     activeTiles[i].style.color = 'rgb(173, 58, 58)';
-            // }
+            remainingAnomalyLetters = getRemainingAnomalyLetters(dailySecretWords[0]);
+            if (isAnomalyLetter(activeTiles[i], remainingAnomalyLetters)) {
+                activeTiles[i].classList.add('anomaly-letter-indicator');
+            }
 
             if (i === activeTiles.length - 1) {
                 activeTiles[i].addEventListener('transitionend', doneFlip, false);
@@ -2919,11 +2954,6 @@ function checkGuess(activeTiles, guess) {
             }
         });
     }
-}
-
-function isAnomalyLetter(letter, anomalyWord) {
-    if (anomalyWord.includes(letter.toLowerCase())) return true;
-    else return false; 
 }
 
 function doneFlip(e) {
@@ -3029,6 +3059,8 @@ function makeAlert(content, duration = 1000) {
     }, duration)
 }
 
+// not in use
+// used to dynamically style letters as user types to indicate getting closer to finding a daily anomaly word
 function styleAnomalyLetters(numSharedLetters, anomalyWord) {
     const activeTiles = document.querySelectorAll('.tile.active');
     activeTiles.forEach(tile => tile.classList.remove('anomaly-letter'))
@@ -3051,7 +3083,6 @@ function styleAnomalyLetters(numSharedLetters, anomalyWord) {
 
 function captureKey(e) {
     let key;
-    const activeTiles = document.querySelectorAll('.active');
 
     if (e.type === 'click') {
         key = e.target.dataset.key;
@@ -3060,16 +3091,19 @@ function captureKey(e) {
     else key = e.key;
     if (key !== 'Enter') {
         checkSecretCodes(secretCodes, key);
-        checkDailyAnomaly();
+        checkDailyAnomaly(key);
     }
 }
 
-function checkDailyAnomaly() {
+function checkDailyAnomaly(lastLetterAdded) {
     const activeTiles = [...document.querySelectorAll('.active')];
     const activeWord = activeTiles.map(tile => tile.dataset.letter).join('').toLowerCase();
     let maxSharedLetters = 0;
 
     for (let word of dailySecretWords) {
+        // short circuit if the letter most recently added isn't in the word
+        const regex = new RegExp('^[a-z]$', 'i');
+        if (lastLetterAdded.match(regex) && !word.includes(lastLetterAdded)) return;
 
         // count up the frequencies of each letter in the daily word:
         const wordFreqCounter = {};
@@ -3089,7 +3123,7 @@ function checkDailyAnomaly() {
         }
 
         // style the active tiles based on how many shared letters there are with the daily secret word (anomaly):
-        if (activeWord !== word) styleAnomalyLetters(maxSharedLetters, word)
+        // if (activeWord !== word) styleAnomalyLetters(maxSharedLetters, word)
 
         // do animation if the activeWord is a daily secret word:
         if (activeWord === word) {
