@@ -2804,12 +2804,17 @@ function shakeTiles(tiles) {
 
 // bouncing animation for win:
 function victoryDance(tiles) {
+    stopInteraction();
     tiles.forEach((tile, index) => {
         setTimeout(() => {
             tile.classList.add('dance');
             tile.addEventListener('animationend', () => {
                 tile.classList.remove('dance');
             });
+            if (index === tiles.length - 1) {
+                startInteraction();
+            }
+
         }, index * 500/5);
     })   
 }
