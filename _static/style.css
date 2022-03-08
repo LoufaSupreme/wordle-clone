@@ -228,24 +228,24 @@ body {
 
 .tile.anomaly-letter-indicator:not(.active) {
     position: relative;
-    text-decoration: underline;
+    /* text-decoration: underline;
     text-decoration-thickness: 1px;
-    /* text-decoration-color: hsl(var(--clr-correct)); */
-    text-underline-offset: 30%;
+    text-underline-offset: 30%; */
 }
 
-/* 
+
 .tile.anomaly-letter-indicator:not(.active)::after {
     content: "";
     background: grey;
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 16%;
+    left: 33%;
     height: 1px;
-    width: 50%;
+    width: 33%;
     animation: pulse 8s linear 0s infinite forwards;
 }
 
+/*
 @keyframes pulse {
     0% {
         width: 0%;
