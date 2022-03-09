@@ -226,7 +226,7 @@ body {
     /* animation: multicolor-border 7000ms infinite alternate; */
 }
 
-.tile.anomaly-letter-indicator:not(.active) {
+.tile.anomaly-letter-indicator {
     position: relative;
     /* text-decoration: underline;
     text-decoration-thickness: 1px;
@@ -234,15 +234,15 @@ body {
 }
 
 
-.tile.anomaly-letter-indicator:not(.active)::after {
+.tile.anomaly-letter-indicator::after {
     content: "";
-    background: grey;
+    background: rgba(211, 211, 211, 0.75);
     position: absolute;
     bottom: 16%;
     left: 33%;
     height: 1px;
     width: 33%;
-    animation: pulse 8s linear 0s infinite forwards;
+    /* animation: pulse 8s linear 0s infinite forwards; */
 }
 
 /*

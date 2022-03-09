@@ -2320,7 +2320,7 @@ const guessWords = [
 ];
 
 const WORD_LENGTH = 5;
-const CURRENT_VERSION = 1;
+const CURRENT_VERSION = 2;
 let targetWord;
 let gameNumber;
 let reloadPriorGuesses = false;
@@ -2381,39 +2381,77 @@ gameLoop();
 function versionUpdate() {
     const modal = document.querySelector('#version-modal');
     const contentContainer = modal.querySelector('.modal-container');
-
+    
     const title = document.createElement('div');
     title.classList.add('modal-announcement');
-    title.innerText = 'SHMURDLE ALERT';
 
     const subtitle = document.createElement('div');
     subtitle.classList.add('modal-title');
-    subtitle.innerText = 'Introducing: Daily Anomalies';
 
     const content1 = document.createElement('div');
     content1.classList.add('version-modal-content');
-    content1.innerText = 'Certain words seem to be exhibiting unusual behaviour...';
+    
+    if (CURRENT_VERSION - version === 2) {
+        title.innerText = 'SHMURDLE ALERT';
+        subtitle.innerText = 'Introducing: Daily Anomalies';
+        content1.innerText = 'Certain words seem to be exhibiting unusual behaviour...';
 
-    const grid = document.createElement('div');
-    grid.classList.add('guess-grid');
-    const word = 'WEIRD';
-    for (let letter of word) {
-        const tile = document.createElement('div');
-        tile.classList.add('tile');
-        tile.innerText = letter;
-        tile.style.animation = 'rotate 6000ms linear infinite'
-        grid.appendChild(tile);
+        const grid = document.createElement('div');
+        grid.classList.add('guess-grid');
+        const word = 'WEIRD';
+        for (let letter of word) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.innerText = letter;
+            tile.style.animation = 'rotate 6000ms linear infinite'
+            grid.appendChild(tile);
+        }
+
+        const content2 = document.createElement('div');
+        content2.classList.add('version-modal-content');
+        content2.innerText = 'See if you can identify these mischievous words each day. Be sure to report your findings back to headquarters.';
+
+        contentContainer.appendChild(title);
+        contentContainer.appendChild(subtitle);
+        contentContainer.appendChild(content1);
+        contentContainer.appendChild(grid);
+        contentContainer.appendChild(content2);
     }
+    else if (CURRENT_VERSION - version === 0) {
+        title.innerText = 'SHMURDLE ALERT';
+        subtitle.innerText = 'Hunting for Anomalies';
+        content1.innerText = "It's been reported that the anomaly word letters can have unusual markings on them...";
 
-    const content2 = document.createElement('div');
-    content2.classList.add('version-modal-content');
-    content2.innerText = 'See if you can identify these mischievous words each day. Be sure to report your findings back to headquarters.';
+        const grid = document.createElement('div');
+        grid.classList.add('guess-grid');
+        const word = 'CLUES';
+        for (let letter of word) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.innerText = letter;
+            if (letter === 'C' || letter === 'L' || letter === 'S') {
+                tile.classList.add('anomaly-letter-indicator');
+            }
+            if (letter === 'L' || letter === 'E') {
+                tile.classList.add('present');
+            }
+            else if (letter === 'S') {
+                tile.classList.add('correct');
+            }
+            else tile.classList.add('absent'); 
+            grid.appendChild(tile);
+        }
 
-    contentContainer.appendChild(title);
-    contentContainer.appendChild(subtitle);
-    contentContainer.appendChild(content1);
-    contentContainer.appendChild(grid);
-    contentContainer.appendChild(content2);
+        const content2 = document.createElement('div');
+        content2.classList.add('version-modal-content');
+        content2.innerText = "Unscramble these special letters to find the hidden anomaly each day.";
+
+        contentContainer.appendChild(title);
+        contentContainer.appendChild(subtitle);
+        contentContainer.appendChild(content1);
+        contentContainer.appendChild(grid);
+        contentContainer.appendChild(content2);
+    }
 
     modal.classList.remove('hide');
     localStorage.setItem('version', JSON.stringify(CURRENT_VERSION));
