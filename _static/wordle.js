@@ -3167,8 +3167,7 @@ function checkDailyAnomaly(lastLetterAdded) {
 
     for (let word of dailySecretWords) {
         // short circuit if the letter most recently added isn't in the word
-        const regex = new RegExp('^[a-z]$', 'i');
-        if (lastLetterAdded.match(regex) && !word.includes(lastLetterAdded)) {
+        if (!word.includes(lastLetterAdded)) {
             console.log('no check needed')
             return;
         }
