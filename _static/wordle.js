@@ -3156,7 +3156,8 @@ function captureKey(e) {
 }
 
 function checkDailyAnomaly(lastLetterAdded) {
-    const activeTiles = [...document.querySelectorAll('.active')];
+    alert('works')
+    const activeTiles = Array.from(document.querySelectorAll('.active'));
     const activeWord = activeTiles.map(tile => tile.dataset.letter).join('').toLowerCase();
     let maxSharedLetters = 0;
 
