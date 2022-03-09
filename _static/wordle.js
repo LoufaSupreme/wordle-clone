@@ -2459,17 +2459,18 @@ function versionUpdate() {
 
 function generateDailySecrets(num) {
     dailySecretWords = [];
-    const offset = ((gameNumber - 2082) * num) % (targetWords.length-1);
+    // filter out any secret words and the target word:
+    const availableWords = targetWords.filter(word => {
+        return !secretCodes.map(code => code.key).includes(word) && word !== targetWord;
+    });
+    
+    const offset = ((gameNumber - 2082) * num) % (availableWords.length-1);
     let index = offset;
     for (let i = 0; i < num; i++) {
         if (index >= targetWords.length - 1) index = 0;
         const wordToAdd = targetWords[index];
-        const permanentSecretCodes = secretCodes.map(code => code.key);
-        if (wordToAdd !== targetWord && !permanentSecretCodes.includes(wordToAdd)) {
-            dailySecretWords.push(wordToAdd);
-            // return after adding one if you only want 1 daily anomaly word:
-            return;
-        }
+        dailySecretWords.push(wordToAdd);
+        if (index === availableWords.length) return
         index++;
     }
     // localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
