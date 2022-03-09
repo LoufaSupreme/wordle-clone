@@ -2320,7 +2320,7 @@ const guessWords = [
 ];
 
 const WORD_LENGTH = 5;
-const CURRENT_VERSION = 2;
+const VERSION = 2;
 let targetWord;
 let gameNumber;
 let reloadPriorGuesses = false;
@@ -2369,8 +2369,8 @@ const statHolder = {
     secretsFound: [],
 };
 
-let version = JSON.parse(localStorage.getItem('version')) || 0;
-if (+version !== CURRENT_VERSION) versionUpdate();
+let current_version = JSON.parse(localStorage.getItem('version')) || 0;
+if (+current_version !== VERSION) versionUpdate();
 
 let priorGuesses = JSON.parse(localStorage.getItem('priorGuesses')) || [];
 
@@ -2397,7 +2397,7 @@ function versionUpdate() {
     const content1 = document.createElement('div');
     content1.classList.add('version-modal-content');
     
-    if (CURRENT_VERSION - version === 2) {
+    if (VERSION - +current_version === 2) {
         title.innerText = 'SHMURDLE ALERT';
         subtitle.innerText = 'Introducing: Daily Anomalies';
         content1.innerText = 'Certain words seem to be exhibiting unusual behaviour...';
@@ -2423,10 +2423,10 @@ function versionUpdate() {
         contentContainer.appendChild(grid);
         contentContainer.appendChild(content2);
     }
-    else if (CURRENT_VERSION - version === 0) {
+    else if (VERSION - +current_version === 0) {
         title.innerText = 'SHMURDLE ALERT';
         subtitle.innerText = 'Hunting for Anomalies';
-        content1.innerText = "It's been reported that the anomaly word letters can have unusual markings on them...";
+        content1.innerText = "Letters from anomaly words have been spotted with unusual markings on them...";
 
         const grid = document.createElement('div');
         grid.classList.add('guess-grid');
@@ -2450,7 +2450,7 @@ function versionUpdate() {
 
         const content2 = document.createElement('div');
         content2.classList.add('version-modal-content');
-        content2.innerText = "Unscramble these special letters to find the hidden anomaly each day.";
+        content2.innerText = "Unscramble these unique letters to find the hidden anomaly word each day";
 
         contentContainer.appendChild(title);
         contentContainer.appendChild(subtitle);
@@ -2460,7 +2460,7 @@ function versionUpdate() {
     }
 
     modal.classList.remove('hide');
-    localStorage.setItem('version', JSON.stringify(CURRENT_VERSION));
+    localStorage.setItem('version', JSON.stringify(VERSION));
 }
 
 function generateDailySecrets(num) {
