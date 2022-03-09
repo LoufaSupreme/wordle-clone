@@ -3167,7 +3167,7 @@ function checkDailyAnomaly(lastLetterAdded) {
 
     for (let word of dailySecretWords) {
         // short circuit if the letter most recently added isn't in the word
-        if (!word.includes(lastLetterAdded)) {
+        if (!word.includes(lastLetterAdded.toLowerCase())) {
             console.log('no check needed')
             return;
         }
