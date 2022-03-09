@@ -3159,16 +3159,15 @@ function captureKey(e) {
 }
 
 function checkDailyAnomaly(lastLetterAdded) {
-    console.log(`letter added: ${lastLetterAdded}`)
     const activeTiles = Array.from(document.querySelectorAll('.active'));
     const activeWord = activeTiles.map(tile => tile.dataset.letter).join('').toLowerCase();
-    console.log(`anomaly guess: ${activeWord}`)
     let maxSharedLetters = 0;
 
     for (let word of dailySecretWords) {
         // short circuit if the letter most recently added isn't in the word
+        // NOTE!!! You must include toLowerCase here for chrome iOS.  Every other browser/device combination will already have the lastLetterAdded in lowercase, but chrome iOS for SOME DUMB REASON has it capitalized.
+        // I figured this out by reading console.logs at chrome://inspect
         if (!word.includes(lastLetterAdded.toLowerCase())) {
-            console.log('no check needed')
             return;
         }
 
