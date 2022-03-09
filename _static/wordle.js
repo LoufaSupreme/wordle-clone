@@ -2675,7 +2675,10 @@ function closeVersionModal() {
     const modal = document.querySelector('#version-modal');
     const contentContainer = modal.querySelector('.modal-container');
     contentContainer.querySelectorAll('div').forEach(div => {
-        if (div.id !== 'version-close-btn') div.remove()
+            if (div.id === 'version-close-btn') {
+                if (+current_version === VERSION) div.remove();
+            } 
+            else div.remove()
     });
     modal.classList.toggle('hide');
     if (+current_version !== VERSION) versionUpdate();
