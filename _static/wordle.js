@@ -2324,6 +2324,8 @@ const CURRENT_VERSION = 2;
 let targetWord;
 let gameNumber;
 let reloadPriorGuesses = false;
+let dailySecretWords = [];
+
 const secretAnimations = [
     {name: 'rotateTiles', func: rotateTiles},
     {name: 'colorBackground', func: colorBackground},
@@ -2333,22 +2335,6 @@ const secretAnimations = [
     {name: 'multicolor', func: multicolor},
     {name: 'generateGif', func: generateGif},
 ];
-const statHolder = {
-    // store # of guesses for each game in the gamesPlayed
-    gamesPlayed: [
-        // {id: gameNumber,
-        // datePlayed: new Date().toLocaleDateString(),
-        // numGuesses: 3,
-        // won: true,
-        // word: targetWord,},
-    ],
-    lastPlayed: "",
-    winStreak: 0,
-    winStreakRecord: 0,
-    nonWordGuesses: 0,
-    dailySecretCount: 0,
-    secretsFound: [],
-};
 
 const secretCodes = [
     {key: 'corns', sequence: [], func: corns},
@@ -2366,12 +2352,32 @@ const secretCodes = [
     {key: 'covid', sequence: [], func: covid},
 ];
 
+const statHolder = {
+    // store # of guesses for each game in the gamesPlayed
+    gamesPlayed: [
+        // {id: gameNumber,
+        // datePlayed: new Date().toLocaleDateString(),
+        // numGuesses: 3,
+        // won: true,
+        // word: targetWord,},
+    ],
+    lastPlayed: "",
+    winStreak: 0,
+    winStreakRecord: 0,
+    nonWordGuesses: 0,
+    dailySecretCount: 0,
+    secretsFound: [],
+};
+
 let version = JSON.parse(localStorage.getItem('version')) || 0;
 if (+version !== CURRENT_VERSION) versionUpdate();
 
 let priorGuesses = JSON.parse(localStorage.getItem('priorGuesses')) || [];
-let dailySecretWords = [];
+
+let foundAnomalyWords = JSON.parse(localStorage.getItem('foundAnomalyWords')) || [];
+
 let dailySecretFound = JSON.parse(localStorage.getItem('dailySecretFound')) || false;
+
 let gameOver = JSON.parse(localStorage.getItem('gameOver')) || false;
 
 const stats = JSON.parse(localStorage.getItem('stats')) || statHolder;
@@ -2631,7 +2637,10 @@ function newDay() {
     
     dailySecretFound = false;
     localStorage.setItem('dailySecretFound', JSON.stringify(dailySecretFound));
-    
+
+    foundAnomalyWords = [];
+    localStorage.setItem('foundAnomalyWords', JSON.stringify(foundAnomalyWords));
+
     gameOver = false;
     localStorage.setItem('gameOver', JSON.stringify(gameOver));
 
@@ -2681,9 +2690,7 @@ function gameLoop() {
     targetWord = targetWords[index];
 
     // generate a list of daily words to use as "Anomaly" secrets:
-    // this will give it 10 tries to find one word:
-    generateDailySecrets(10);
-    localStorage.setItem('dailySecretWords', JSON.stringify(dailySecretWords));
+    generateDailySecrets(1);
 
     // resets body vertical height on resize
     setBodyHeight();
@@ -3190,9 +3197,20 @@ function checkDailyAnomaly(lastLetterAdded) {
 
             dailySecretFound = 'Anomaly';
             localStorage.setItem('dailySecretFound', JSON.stringify(dailySecretFound));
-            stats.dailySecretCount ? stats.dailySecretCount++ : stats.dailySecretCount = 1;
-            localStorage.setItem('stats', JSON.stringify(stats));
-            populateStats();
+            
+            // if the anomaly word hasn't already been found today:
+            if (!foundAnomalyWords.includes(word)) {
+                // increase count in stats
+                stats.dailySecretCount ? stats.dailySecretCount++ : stats.dailySecretCount = 1;
+                localStorage.setItem('stats', JSON.stringify(stats));
+                populateStats();
+                // push the word to the found array:
+                foundAnomalyWords.push(word)
+                // update local storage
+                localStorage.setItem('foundAnomalyWords', JSON.stringify(foundAnomalyWords));
+            }
+
+
             return;
         }
     }
