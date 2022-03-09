@@ -3159,14 +3159,19 @@ function captureKey(e) {
 }
 
 function checkDailyAnomaly(lastLetterAdded) {
+    console.log(`letter added: ${lastLetterAdded}`)
     const activeTiles = Array.from(document.querySelectorAll('.active'));
     const activeWord = activeTiles.map(tile => tile.dataset.letter).join('').toLowerCase();
+    console.log(`anomaly guess: ${activeWord}`)
     let maxSharedLetters = 0;
 
     for (let word of dailySecretWords) {
         // short circuit if the letter most recently added isn't in the word
         const regex = new RegExp('^[a-z]$', 'i');
-        if (lastLetterAdded.match(regex) && !word.includes(lastLetterAdded)) return;
+        if (lastLetterAdded.match(regex) && !word.includes(lastLetterAdded)) {
+            console.log('no check needed')
+            return;
+        }
 
         // count up the frequencies of each letter in the daily word:
         const wordFreqCounter = {};
@@ -3190,6 +3195,7 @@ function checkDailyAnomaly(lastLetterAdded) {
 
         // do animation if the activeWord is a daily secret word:
         if (activeWord === word) {
+            console.log('FOUND')
             makeAlert('Anomaly Found!', 2000);
     
             // choose a random animation:
