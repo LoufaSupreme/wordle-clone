@@ -2634,7 +2634,7 @@ function updateCountdown() {
 // check if today is a different day than the lastDate stored in local storage
 function newDay() {
     const today = new Date().toLocaleDateString();
-    if (JSON.parse(localStorage.getItem('lastDate')) === today) return false;
+    // if (JSON.parse(localStorage.getItem('lastDate')) === today) return false;
     localStorage.setItem('lastDate', JSON.stringify(today));
     
     priorGuesses = [];
