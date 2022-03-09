@@ -2866,7 +2866,7 @@ function victoryDance(tiles) {
             tile.addEventListener('animationend', () => {
                 tile.classList.remove('dance');
             });
-            if (index === tiles.length - 1) {
+            if (index === tiles.length - 1 && !gameOver) {
                 startInteraction();
             }
 
