@@ -2453,7 +2453,7 @@ function versionUpdate() {
 
         const content2 = document.createElement('div');
         content2.classList.add('version-modal-content');
-        content2.innerText = "Unscramble these unique letters to find the hidden anomaly word each day";
+        content2.innerText = "Unscramble these unique letters to find the hidden anomaly each day.\n\nNote: You don't need to submit a guess to find an anomaly.";
 
         contentContainer.appendChild(title);
         contentContainer.appendChild(subtitle);
