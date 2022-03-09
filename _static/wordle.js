@@ -2470,7 +2470,7 @@ function generateDailySecrets(num) {
         return !secretCodes.map(code => code.key).includes(word) && word !== targetWord;
     });
     
-    const offset = ((gameNumber - 2082) * num) % (availableWords.length-1);
+    const offset = ((gameNumber + 100) * num) % (availableWords.length-1);
     let index = offset;
     for (let i = 0; i < num; i++) {
         if (index >= targetWords.length - 1) index = 0;
