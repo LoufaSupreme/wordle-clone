@@ -2422,8 +2422,11 @@ function versionUpdate() {
         contentContainer.appendChild(content1);
         contentContainer.appendChild(grid);
         contentContainer.appendChild(content2);
+
+        current_version++;
+        localStorage.setItem('version', JSON.stringify(current_version));
     }
-    else if (VERSION - +current_version === 0) {
+    else if (VERSION - +current_version === 1) {
         title.innerText = 'SHMURDLE ALERT';
         subtitle.innerText = 'Hunting for Anomalies';
         content1.innerText = "Letters from anomaly words have been spotted with unusual markings on them...";
@@ -2457,10 +2460,12 @@ function versionUpdate() {
         contentContainer.appendChild(content1);
         contentContainer.appendChild(grid);
         contentContainer.appendChild(content2);
+
+        current_version++;
+        localStorage.setItem('version', JSON.stringify(current_version));
     }
 
     modal.classList.remove('hide');
-    localStorage.setItem('version', JSON.stringify(VERSION));
 }
 
 function generateDailySecrets(num) {
@@ -2668,8 +2673,12 @@ function closeSecretModal() {
 // modal used to display new content due to updates/version changes:
 function closeVersionModal() {
     const modal = document.querySelector('#version-modal');
-    modal.querySelectorAll('div').forEach(div => div.remove());
+    const contentContainer = modal.querySelector('.modal-container');
+    contentContainer.querySelectorAll('div').forEach(div => {
+        if (div.id !== 'version-close-btn') div.remove()
+    });
     modal.classList.toggle('hide');
+    if (+current_version !== VERSION) versionUpdate();
 }
 
 // reset body vertical height
