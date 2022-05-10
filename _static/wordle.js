@@ -3039,7 +3039,8 @@ function checkWin(guess) {
         else if (totalLetters <= 10) makeAlert("2 guesses?? Highly suspicious but congrats.", 3000);
         else if (totalLetters <= 15) makeAlert("Incredible!", 3000);
         else if (totalLetters <= 20) makeAlert("Great!", 3000);
-        else makeAlert("Not bad!", 3000);
+        else if (totalLetters <= 25) makeAlert("Not bad!", 3000);
+        else makeAlert("Phew!", 3000);
 
         // update localStorage:
         if (!stats.gamesPlayed.find(game => game.id === gameNumber)) {
