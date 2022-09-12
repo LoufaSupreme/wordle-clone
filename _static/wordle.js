@@ -2350,6 +2350,7 @@ const secretCodes = [
     {key: 'blurs', sequence: [], func: blurs},
     {key: 'chaos', sequence: [], func: chaos},
     {key: 'covid', sequence: [], func: covid},
+    {key: 'hides', sequence: [], func: hides},
 ];
 
 const statHolder = {
@@ -3284,6 +3285,7 @@ function corns() {
     // cornify_add(); // adds a unicorn from inbedded cornify site (see script tag above)
 }
 
+// creates an optimal next guess for the user automatically
 function ineedhelp() {
     const keyboard = document.querySelector('.keyboard');
     const keys = [...keyboard.querySelectorAll('.key')];
@@ -3309,6 +3311,24 @@ function ineedhelp() {
     for (let i = 0; i < WORD_LENGTH; i++) deleteLetter();
     for (let letter of possibleWord) {
         addLetter(letter);
+    }
+}
+
+// reveals the rest of the unfound anomaly letters to the user
+function hides() {
+    const anomalyLetters = dailySecretWords[0].split('');
+    const foundAnomalyLetters = [...document.querySelectorAll('.tile')]
+        .filter(tile => tile.classList.contains('anomaly-letter-indicator'))
+        .map(tile => tile.dataset.letter.toLowerCase());
+
+    const unfoundAnomalyLetters = anomalyLetters.filter(letter => !foundAnomalyLetters.includes(letter)).map(letter => letter.toUpperCase());
+
+    for (let i = 0; i < WORD_LENGTH; i++) deleteLetter();
+    if (unfoundAnomalyLetters.length <= 0) {
+        makeAlert("There aren't anymore anomaly letters to reveal!")
+    }
+    else {
+        makeAlert(`Missing Anomaly Letters: ${unfoundAnomalyLetters}`);
     }
 }
 
