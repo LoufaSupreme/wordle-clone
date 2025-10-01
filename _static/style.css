@@ -665,7 +665,7 @@ footer > a {
 .text-overlay {
     color: rgb(209, 117, 132);
     z-index: 101;
-    font-size: 3rem;
+    font-size: clamp(0.7rem, 8vmin, 3rem);
     font-weight: bold;
     position: absolute;
     top: 5%;
