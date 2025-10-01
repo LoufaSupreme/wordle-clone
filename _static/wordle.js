@@ -2351,6 +2351,8 @@ const secretCodes = [
     {key: 'chaos', sequence: [], func: chaos},
     {key: 'covid', sequence: [], func: covid},
     {key: 'hides', sequence: [], func: hides},
+    {key: 'cowws', sequence: [], func: cowws},
+    {key: 'windy', sequence: [], func: windy},
 ];
 
 const statHolder = {
@@ -2661,10 +2663,11 @@ function showStats() {
 // modal used to display secret content
 function closeSecretModal() {
     const modal = document.querySelector('#crack-modal');
-    modal.querySelectorAll('img').forEach(img => modal.removeChild(img));
-    modal.querySelectorAll('div').forEach(div => {
-        if (div.id !== 'secret-modal-close-btn') modal.removeChild(div);
+    modal.querySelectorAll(':scope > div').forEach(elem => {
+        console.log(elem)
+        if (elem.id !== 'secret-modal-close-btn') modal.removeChild(elem);
     });
+    modal.querySelectorAll('img').forEach(img => modal.removeChild(img));
     // reset darkened background since for "crack" secret we dont want it dark
     modal.style.backgroundColor = 'transparent';
     modal.classList.remove('blur');
@@ -3110,7 +3113,7 @@ function updateKeyboard(guess) {
     }
 }
 
-function makeAlert(content, duration = 1000) {
+function makeAlert(content, duration = 2000) {
     const alertContainer = document.querySelector('.alert-container');
     const newAlert = document.createElement('div');
     newAlert.classList.add('alert');
@@ -3418,17 +3421,60 @@ function arash() {
     const modal = document.querySelector('#crack-modal');
     modal.classList.toggle('hide');
 
+    const container = document.createElement('div');
+    container.classList.add('wanted');
+    container.addEventListener('click', closeSecretModal);
+    modal.appendChild(container);
+
     const arash = document.createElement('img');
-    arash.classList.add('wanted');
     arash.setAttribute('src', './images/arash.jpg');
-    arash.addEventListener('click', closeSecretModal);
-    modal.appendChild(arash);
+    container.appendChild(arash);
 
     const text = document.createElement('div');
     text.classList.add('text-overlay');
     text.innerText = 'HAPPY BIRTHDAY!';
     text.style.animation = 'dance 500ms ease-in-out';
-    modal.appendChild(text);
+    container.appendChild(text);
+}
+
+function cowws() {
+    const modal = document.querySelector('#crack-modal');
+    modal.classList.toggle('hide');
+
+    const container = document.createElement('div');
+    container.classList.add('wanted');
+    container.addEventListener('click', closeSecretModal);
+    modal.appendChild(container);
+
+    const cow = document.createElement('img');
+    cow.setAttribute('src', './images/highlandCow.png');
+    container.appendChild(cow);
+
+    const text = document.createElement('div');
+    text.classList.add('text-overlay');
+    text.innerText = 'COWWWS!';
+    text.style.animation = 'dance 500ms ease-in-out';
+    container.appendChild(text);
+}
+
+function windy() {
+    const modal = document.querySelector('#crack-modal');
+    modal.classList.toggle('hide');
+
+    const container = document.createElement('div');
+    container.classList.add('wanted');
+    container.addEventListener('click', closeSecretModal);
+    modal.appendChild(container);
+
+    const cow = document.createElement('img');
+    cow.setAttribute('src', './images/windyCow.png');
+    container.appendChild(cow);
+
+    const text = document.createElement('div');
+    text.classList.add('text-overlay');
+    text.innerText = 'It Fucken WIMDY!';
+    text.style.animation = 'dance 500ms ease-in-out';
+    container.appendChild(text);
 }
 
 function generateGif(word) {

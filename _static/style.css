@@ -15,6 +15,12 @@
     --vh: 1vh;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 body {
     background-color: hsl(var(--clr-dark));
     background-size: 100vw 100vh;
@@ -602,10 +608,12 @@ footer > a {
     top: 50%;
     transform: translateY(-50%);
     z-index: 100;
-    max-height: 90vh;
-    max-width: 90vw;
+    max-height: 80vh;
+    max-width: 80vw;
     pointer-events: visible;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
 }
 
 /* astronaut image */
@@ -654,13 +662,14 @@ footer > a {
 }
 
 .text-overlay {
-    color: pink;
+    color: rgb(209, 117, 132);
     z-index: 101;
     font-size: 3rem;
     font-weight: bold;
-    position: relative;
-    top: -17%;
+    position: absolute;
+    top: 5%;
     text-align: center;
+    width: 90%;
 }
 
 .gif {
