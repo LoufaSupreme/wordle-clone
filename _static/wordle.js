@@ -3425,7 +3425,6 @@ function snowy() {
 
 function arash() {
     const modal = document.querySelector('#crack-modal');
-    modal.classList.toggle('hide');
 
     const container = document.createElement('div');
     container.classList.add('wanted');
@@ -3436,36 +3435,41 @@ function arash() {
     arash.setAttribute('src', './images/arash.jpg');
     container.appendChild(arash);
 
-    const text = document.createElement('div');
-    text.classList.add('text-overlay');
-    text.innerText = 'HAPPY BIRTHDAY!';
-    text.style.animation = 'dance 500ms ease-in-out';
-    container.appendChild(text);
+    setTimeout(() => {
+        modal.classList.toggle('hide');
+        const text = document.createElement('div');
+        text.classList.add('text-overlay');
+        text.innerText = 'HAPPY BIRTHDAY!';
+        text.style.animation = 'dance 500ms ease-in-out';
+        container.appendChild(text);
+    },1000);
 }
 
 function cowws() {
     const modal = document.querySelector('#crack-modal');
-    modal.classList.toggle('hide');
 
     const container = document.createElement('div');
     container.classList.add('wanted');
     container.addEventListener('click', closeSecretModal);
     modal.appendChild(container);
-
+    
     const cow = document.createElement('img');
     cow.setAttribute('src', './images/highlandCow.png');
     container.appendChild(cow);
-
+    
     const text = document.createElement('div');
     text.classList.add('text-overlay');
     text.innerText = 'COWWWS!';
     text.style.animation = 'dance 500ms ease-in-out';
     container.appendChild(text);
+
+    setTimeout(() => {
+        modal.classList.toggle('hide');
+    },1000);
 }
 
 function windy() {
     const modal = document.querySelector('#crack-modal');
-    modal.classList.toggle('hide');
 
     const container = document.createElement('div');
     container.classList.add('wanted');
@@ -3481,6 +3485,10 @@ function windy() {
     text.innerText = 'It Fucken WIMDY!';
     text.style.animation = 'dance 500ms ease-in-out';
     container.appendChild(text);
+
+    setTimeout(() => {
+        modal.classList.toggle('hide');
+    },1000);
 }
 
 function generateGif(word) {
