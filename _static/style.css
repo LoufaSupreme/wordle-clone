@@ -519,13 +519,13 @@ body {
     display: flex;
     justify-content: space-evenly;
     padding: 2rem;
-    width: 100%;
+    /* width: 100%; */
 }
 
 .footer-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     text-align: center;
     padding: 0 1rem;
@@ -533,6 +533,7 @@ body {
 
 .footer-title {
     font-weight: bold;
+    font-size: clamp(.5rem, 2.5vmin, 1.1rem);
 }
 
 #countdown {
