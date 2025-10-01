@@ -3457,15 +3457,14 @@ function cowws() {
     cow.setAttribute('src', './images/highlandCow.png');
     container.appendChild(cow);
     
-    const text = document.createElement('div');
-    text.classList.add('text-overlay');
-    text.innerText = 'COWWWS!';
-    text.style.animation = 'dance 500ms ease-in-out';
-    container.appendChild(text);
-
     setTimeout(() => {
         modal.classList.toggle('hide');
-    },1000);
+        const text = document.createElement('div');
+        text.classList.add('text-overlay');
+        text.innerText = 'COWWWS!';
+        text.style.animation = 'dance 500ms ease-in-out';
+        container.appendChild(text);
+    },1200);
 }
 
 function windy() {
@@ -3480,15 +3479,14 @@ function windy() {
     cow.setAttribute('src', './images/windyCow.png');
     container.appendChild(cow);
 
-    const text = document.createElement('div');
-    text.classList.add('text-overlay');
-    text.innerText = 'It Fucken WIMDY!';
-    text.style.animation = 'dance 500ms ease-in-out';
-    container.appendChild(text);
-
     setTimeout(() => {
         modal.classList.toggle('hide');
-    },1000);
+        const text = document.createElement('div');
+        text.classList.add('text-overlay');
+        text.innerText = 'It Fucken WIMDY!';
+        text.style.animation = 'dance 500ms ease-in-out';
+        container.appendChild(text);
+    },1200);
 }
 
 function generateGif(word) {
