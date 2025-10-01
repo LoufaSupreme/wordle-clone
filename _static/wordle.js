@@ -3404,12 +3404,18 @@ function snowy() {
     }
     else body.style.backgroundImage = 'url("./images/snowy.jpg")';
 
+    function getRandomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     setInterval(() => {
         const flake = document.createElement('img');
         flake.classList.add('snowflake');
         flake.setAttribute('src', './images/snowflake.png');
         flake.style.left = `${Math.random() * vw}px`;
-        flake.style.animation = `fall ${Math.random() * (40-20+1) + 20}s linear`
+        flake.style.animation = `fall ${Math.random() * (40-20+1) + 20}s linear`;
+        const randRotation = getRandomInteger(-1440, 1440)
+        flake.style.setProperty('--rotation', `${randRotation}deg`);
         body.appendChild(flake);
         flake.addEventListener('animationend', () => {
             body.removeChild(flake);

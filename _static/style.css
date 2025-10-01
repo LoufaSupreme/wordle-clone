@@ -647,6 +647,7 @@ footer > a {
 }
 
 .snowflake {
+    --rotation: 360deg;
     position: fixed;
     z-index: 100;
     top: -10%;
@@ -657,7 +658,7 @@ footer > a {
 
 @keyframes fall {
     100% {
-        transform: translateY(120vh);
+        transform: translateY(120vh) rotate(var(--rotation));
     }
 }
 
