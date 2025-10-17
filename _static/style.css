@@ -116,6 +116,7 @@ body {
     grid-column: span 2;
     border: none;
     padding:0;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -127,6 +128,17 @@ body {
     user-select: none; 
     touch-action: manipulation;
     transition: transform 150ms ease-in-out;
+}
+
+.key.anomaly-letter-indicator::after {
+    content: "";
+    background: rgba(211, 211, 211, 0.65);
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    height: 1px;
+    width: 25%;
+    transform: translate(-50%);
 }
 
 .key.flip {
@@ -228,7 +240,7 @@ body {
 }
 
 .tile.active.anomaly-letter {
-    animation: vibrate 120ms linear infinite alternate;
+    /* animation: vibrate 120ms linear infinite alternate; */
     /* animation: multicolor-border 7000ms infinite alternate; */
 }
 

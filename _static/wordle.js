@@ -2916,7 +2916,7 @@ function flipTile(tile, index, duration) {
 }
 
 function getRemainingAnomalyLetters(anomalyWord) {
-    const anomalyTilesAlreadyFound = document.querySelectorAll('.anomaly-letter-indicator');
+    const anomalyTilesAlreadyFound = document.querySelectorAll('.tile.anomaly-letter-indicator');
 
     const anomalyWordLetterCount = {};
     for (let i = 0; i < anomalyWord.length; i++) {
@@ -3109,6 +3109,9 @@ function updateKeyboard(guess) {
         }
         else {
             key.classList.add('absent');
+        }
+        if (dailySecretWords[0].includes(guess[i])) {
+            key.classList.add('anomaly-letter-indicator');
         }
     }
 }
