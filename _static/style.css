@@ -685,6 +685,15 @@ footer > a {
     width: 90%;
 }
 
+.text-overlay.top {
+    font-size: clamp(0.7rem, 4.5vmin, 3rem);
+}
+
+.text-overlay.bottom {
+    font-size: clamp(0.7rem, 5vmin, 3rem);
+    top: 88%;    
+}
+
 .gif {
     max-width: 90%;
     max-height: 90%;

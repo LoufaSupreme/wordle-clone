@@ -2353,6 +2353,7 @@ const secretCodes = [
     {key: 'hides', sequence: [], func: hides},
     {key: 'cowws', sequence: [], func: cowws},
     {key: 'windy', sequence: [], func: windy},
+    {key: 'cytof', sequence: [], func: cytof},
 ];
 
 const statHolder = {
@@ -3489,6 +3490,34 @@ function windy() {
         text.innerText = 'It Fucken WIMDY!';
         text.style.animation = 'dance 500ms ease-in-out';
         container.appendChild(text);
+    },1200);
+}
+
+function cytof() {
+    const modal = document.querySelector('#crack-modal');
+
+    const container = document.createElement('div');
+    container.classList.add('wanted');
+    container.addEventListener('click', closeSecretModal);
+    modal.appendChild(container);
+
+    const ostrich = document.createElement('img');
+    ostrich.setAttribute('src', './images/ostrich.jpg');
+    container.appendChild(ostrich);
+
+    setTimeout(() => {
+        modal.classList.toggle('hide');
+        const topText = document.createElement('div');
+        topText.classList.add('text-overlay', 'top');
+        topText.innerText = 'The cytometry guys asked me for the time of flight data...';
+        topText.style.animation = 'dance 500ms ease-in-out';
+        container.appendChild(topText);
+
+        const bottomText = document.createElement('div');
+        bottomText.classList.add('text-overlay', 'bottom');
+        bottomText.innerText = "...bitch I'm flightless";
+        bottomText.style.animation = 'dance 500ms ease-in-out';
+        container.appendChild(bottomText);
     },1200);
 }
 
