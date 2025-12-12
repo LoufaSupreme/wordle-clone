@@ -3677,14 +3677,4 @@ function rotateTiles() {
     });
 }
 
-// send an API request to project red rover server every 10min to keep Render.com from
-// spinning down my free tier deployment
-setInterval(async () => {
-    const status = await fetch('https://project-red-rover.onrender.com/api/status');
-    const statusJSON = await status.json();
-    const statusMsg = statusJSON.statusMsg;
-
-    console.log(`Status: ${statusMsg}`)
-}, 600000);
-
 
