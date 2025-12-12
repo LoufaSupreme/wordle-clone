@@ -2665,7 +2665,7 @@ function showStats() {
 function closeSecretModal() {
     const modal = document.querySelector('#crack-modal');
     modal.querySelectorAll(':scope > div').forEach(elem => {
-        console.log(elem)
+        // console.log(elem)
         if (elem.id !== 'secret-modal-close-btn') modal.removeChild(elem);
     });
     modal.querySelectorAll('img').forEach(img => modal.removeChild(img));
