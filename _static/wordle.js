@@ -41,6 +41,7 @@ const secretCodes = [
     {key: 'cowws', sequence: [], func: cowws},
     {key: 'windy', sequence: [], func: windy},
     {key: 'cytof', sequence: [], func: cytof},
+    {key: 'buddy', sequence: [], func: buddy},
 ];
 
 const statHolder = {
@@ -1078,12 +1079,24 @@ function space() {
 function davis() {
     const modal = document.querySelector('#crack-modal');
     modal.classList.toggle('hide');
-
+    
     const wanted = document.createElement('img');
     wanted.classList.add('wanted');
     wanted.setAttribute('src', './images/davis.png');
     wanted.addEventListener('click', closeSecretModal);
     modal.appendChild(wanted);
+}
+
+function buddy() {
+    const modal = document.querySelector('#crack-modal');
+    
+    const melon = document.createElement('img');
+    melon.classList.add('wanted');
+    melon.setAttribute('src', './images/melon.png');
+    melon.addEventListener('click', closeSecretModal);
+    modal.appendChild(melon);
+
+    modal.classList.toggle('hide');
 }
 
 function snowy() {
