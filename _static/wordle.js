@@ -1073,7 +1073,7 @@ function space() {
     });
 
     const secretDiv = document.querySelector('.secret-div');
-    secretDiv.innerHTML = 'You may find <a href="http://project-red-rover.herokuapp.com">PROJECT RED ROVER</a> interesting...'
+    secretDiv.innerHTML = 'You may find <a href="https://project-red-rover.onrender.com/">PROJECT RED ROVER</a> interesting...'
 }
 
 function davis() {
